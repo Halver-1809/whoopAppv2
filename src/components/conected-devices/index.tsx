@@ -63,8 +63,8 @@ const DeviceScreen = () => {
           </View>
         )}
       </View>
-      {/* Pasar la función handleDeviceSelection al modal */}
-      <ConnectDeviceModal />
+      <ConnectDeviceModal onDeviceSelected={handleDeviceSelected} />
+      {/*<ConnectDeviceModalZeroConfig />*/}
     </View>
   );
 };
