@@ -1,11 +1,18 @@
 import { Ionicons } from '@expo/vector-icons'; // Para los íconos
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import SvgComponent from './assets/bot';
 import SvgComponent3 from './assets/humifi';
 import SvgComponent2 from './assets/light';
 import ConnectDeviceModal from './utils/boton-modal';
+import ConnectDeviceModalZeroConfig from './utils/zero-config';
 
 const DeviceScreen = () => {
   const [selectedDevice, setSelectedDevice] = useState<{
@@ -64,7 +71,9 @@ const DeviceScreen = () => {
         )}
       </View>
       <ConnectDeviceModal onDeviceSelected={handleDeviceSelected} />
-      {/*<ConnectDeviceModalZeroConfig />*/}
+      <ScrollView contentContainerStyle={styles.deviceList}>
+        <ConnectDeviceModalZeroConfig />
+      </ScrollView>
     </View>
   );
 };
@@ -75,6 +84,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#1A1A1A',
     paddingHorizontal: 16,
     paddingTop: 50,
+  },
+  deviceList: {
+    marginTop: 20,
+    paddingBottom: 20,
   },
   svg3: {
     marginBottom: 8,

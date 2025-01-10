@@ -8,14 +8,7 @@ import Svg, {
   Use,
 } from 'react-native-svg';
 const SvgComponent = (props: SvgProps) => (
-  <Svg
-    xmlns="http://www.w3.org/2000/svg"
-    xmlnsXlink="http://www.w3.org/1999/xlink"
-    width={77}
-    height={78}
-    fill="none"
-    {...props}
-  >
+  <Svg width={77} height={78} fill="none" {...props}>
     <Path fill="url(#a)" d="M0 0h77v78H0z" />
     <Defs>
       <Pattern

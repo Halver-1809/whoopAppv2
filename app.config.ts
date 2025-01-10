@@ -26,13 +26,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   description: `${Env.NAME} Mobile App`,
   owner: Env.EXPO_ACCOUNT_OWNER,
   scheme: Env.SCHEME,
-  slug: 'obytesapp',
+  slug: 'whoopapp',
   version: Env.VERSION.toString(),
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
   updates: {
+    url: 'https://u.expo.dev/1d258c6e-e8a3-43d6-ad84-baa68a58ecef',
     fallbackToCacheTimeout: 0,
   },
   assetBundlePatterns: ['**/*'],
@@ -49,6 +50,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: '#2E3C4B',
     },
     package: Env.PACKAGE,
+    runtimeVersion: Env.VERSION.toString(),
   },
   web: {
     favicon: './assets/favicon.png',

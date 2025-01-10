@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
+import { Ionicons } from '@expo/vector-icons';
 import { Link, Redirect, SplashScreen, Tabs } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 
@@ -6,7 +7,6 @@ import { Pressable, Text } from '@/components/ui';
 import {
   Feed as FeedIcon,
   Settings as SettingsIcon,
-  Style as StyleIcon,
 } from '@/components/ui/icons';
 import { useAuth, useIsFirstTime } from '@/lib';
 
@@ -41,15 +41,15 @@ export default function TabLayout() {
           tabBarButtonTestID: 'feed-tab',
         }}
       />
-
       <Tabs.Screen
-        name="style"
+        name="search"
         options={{
           title: 'Search',
-          headerShown: false,
-          tabBarIcon: ({ color }) => <StyleIcon color={color} />,
-          headerRight: () => <CreateNewPostLink />,
-          tabBarButtonTestID: 'style-tab',
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="search-outline" size={24} color={color} />
+          ),
+          headerRight: () => <Notification />,
+          tabBarButtonTestID: 'search-tab',
         }}
       />
       <Tabs.Screen
@@ -70,6 +70,16 @@ const CreateNewPostLink = () => {
     <Link href="/feed/add-post" asChild>
       <Pressable>
         <Text className="px-3 text-primary-300">Create</Text>
+      </Pressable>
+    </Link>
+  );
+};
+
+const Notification = () => {
+  return (
+    <Link href="/notification/receive-notifications" asChild>
+      <Pressable style={{ marginRight: 16 }}>
+        <Ionicons name="notifications-outline" size={24} color="#FE6B00" />
       </Pressable>
     </Link>
   );

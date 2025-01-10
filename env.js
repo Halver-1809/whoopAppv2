@@ -37,8 +37,8 @@ require('dotenv').config({
 const BUNDLE_ID = 'com.whoopapp'; // ios bundle id
 const PACKAGE = 'com.whoopapp'; // android package name
 const NAME = 'WhoopApp'; // app name
-const EXPO_ACCOUNT_OWNER = 'expo-owner'; // expo account owner
-const EAS_PROJECT_ID = 'c3e1075b-6fe7-4686-aa49-35b46a229044'; // eas project id
+const EXPO_ACCOUNT_OWNER = 'cromos'; // expo account owner
+const EAS_PROJECT_ID = '1d258c6e-e8a3-43d6-ad84-baa68a58ecef'; // eas project id
 const SCHEME = 'WhoopApp'; // app scheme
 
 /**
