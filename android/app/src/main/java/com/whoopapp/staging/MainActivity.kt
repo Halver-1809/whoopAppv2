@@ -1,4 +1,4 @@
-package com.whoopapp.development
+package com.whoopapp.staging
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.whoopapp.development
+package com.whoopapp.staging
 
 import android.app.Application
 import android.content.res.Configuration
