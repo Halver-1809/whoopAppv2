@@ -29,7 +29,9 @@
       },
       "android": {
         "buildType": "apk",
-        "image": "latest"
+        "gradleCommand": ":app:assembleRelease",
+        "image": "latest",
+        "applicationArchivePath": "android/app/build/outputs/apk/release/app-release.apk"
       },
       "env": {
         "APP_ENV": "staging",
