@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Zeroconf from 'react-native-zeroconf';
 
 interface ConnectDeviceModalProps {
   onDeviceSelected: (device: { name: string; id: string }) => void;
@@ -18,56 +19,72 @@ const ConnectDeviceModal: React.FC<ConnectDeviceModalProps> = ({
   onDeviceSelected,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [devices, setDevices] = useState([
-    { name: 'Xiaomi Mi Dual Mode Wireless Silent', id: 'XM11X45F78' },
-    { name: 'Diflesi Wi-fi Smart Bulb', id: 'DF98Y22G34' },
-    { name: 'Samsung Smart Thermostat', id: 'SS42Z15H89' },
-    { name: 'Google Nest Hub', id: 'GN56W78P23' },
-    { name: 'Amazon Echo Dot', id: 'AE10P33D45' },
-    { name: 'Philips Hue Lightstrip', id: 'PH56Z77L12' },
-  ]);
+  const [devices, setDevices] = useState<{ name: string; id: string }[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<string | null>(null);
   const [showDevices, setShowDevices] = useState(false);
 
-  // Animación para los círculos
-  console.log(selectedDevice);
-  const scaleAnim = new Animated.Value(0); // Empezamos con escala 0
-  const rotateAnim = new Animated.Value(0); // Empezamos sin rotación
+  const scaleAnim = new Animated.Value(0);
+  const rotateAnim = new Animated.Value(0);
+  const zeroconf = new Zeroconf();
 
-  // Iniciar animación cuando se muestre el modal
   useEffect(() => {
     if (modalVisible) {
       startSearchingAnimation();
-      // Retrasa la visualización de los dispositivos 3 segundos
-      const timer = setTimeout(() => {
-        setShowDevices(true);
-      }, 3000);
 
-      return () => clearTimeout(timer); // Limpia el temporizador cuando el modal se cierra
-    } else {
-      setShowDevices(false); // Oculta los dispositivos cuando el modal se cierra
+      // Inicia el escaneo de dispositivos en la red WiFi
+      zeroconf.scan();
+
+      zeroconf.on('resolved', (device: any) => {
+        console.log('kheli hptaaaa:', device);
+        setDevices((prevDevices) => {
+          // Verifica si el dispositivo ya existe en la lista
+          if (!prevDevices.some((d) => d.id === device.host)) {
+            return [
+              ...prevDevices,
+              {
+                name: device.name || device.fullName || 'Unknown Device',
+                id: device.host || 'Unknown Host',
+              },
+            ];
+          }
+          return prevDevices;
+        });
+      });
+
+      // Detener el escaneo cuando el modal se cierra
+      return () => {
+        zeroconf.stop();
+      };
     }
   }, [modalVisible]);
 
-  // Animación de los círculos y la lupa
+  useEffect(() => {
+    if (modalVisible) {
+      const timer = setTimeout(() => {
+        setShowDevices(true);
+      }, 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowDevices(false);
+    }
+  }, [modalVisible]);
+
   const startSearchingAnimation = () => {
-    // Animar los círculos
     Animated.loop(
       Animated.sequence([
         Animated.timing(scaleAnim, {
-          toValue: 1.5, // Escala al 150%
+          toValue: 1.5,
           duration: 1000,
           useNativeDriver: true,
         }),
         Animated.timing(scaleAnim, {
-          toValue: 1, // Vuelve a la escala original
+          toValue: 1,
           duration: 1000,
           useNativeDriver: true,
         }),
       ])
     ).start();
 
-    // Animar la lupa
     Animated.loop(
       Animated.timing(rotateAnim, {
         toValue: 1,
@@ -79,7 +96,7 @@ const ConnectDeviceModal: React.FC<ConnectDeviceModalProps> = ({
 
   const handleDeviceSelect = (device: { name: string; id: string }) => {
     setSelectedDevice(device.name);
-    onDeviceSelected(device); // Pasamos el dispositivo al padre
+    onDeviceSelected(device);
   };
 
   return (
@@ -106,7 +123,6 @@ const ConnectDeviceModal: React.FC<ConnectDeviceModalProps> = ({
               <Text style={styles.selectedDeviceText}>Selected Device</Text>
             </View>
             <View style={styles.searchContainer}>
-              {/* Animación para los círculos */}
               <Animated.View
                 style={[
                   styles.circle,
@@ -133,12 +149,6 @@ const ConnectDeviceModal: React.FC<ConnectDeviceModalProps> = ({
               </Animated.View>
             </View>
             <Text style={styles.title}>Find something</Text>
-            <Text style={styles.subtitle}>Devices</Text>
-            <Text style={styles.description}>
-              Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-              amet sint.
-            </Text>
-
             <ScrollView contentContainerStyle={styles.deviceList}>
               {devices.map((device, index) => (
                 <TouchableOpacity
@@ -147,7 +157,7 @@ const ConnectDeviceModal: React.FC<ConnectDeviceModalProps> = ({
                     styles.deviceCard,
                     selectedDevice === device.name && styles.selectedDevice,
                   ]}
-                  onPress={() => handleDeviceSelect(device)} // Llamamos a handleDeviceSelect
+                  onPress={() => handleDeviceSelect(device)}
                 >
                   <Ionicons
                     name="bulb-outline"

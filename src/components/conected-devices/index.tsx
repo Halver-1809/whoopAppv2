@@ -12,7 +12,6 @@ import SvgComponent from './assets/bot';
 import SvgComponent3 from './assets/humifi';
 import SvgComponent2 from './assets/light';
 import ConnectDeviceModal from './utils/boton-modal';
-import ConnectDeviceModalZeroConfig from './utils/zero-config';
 
 const DeviceScreen = () => {
   const [selectedDevice, setSelectedDevice] = useState<{
@@ -71,9 +70,7 @@ const DeviceScreen = () => {
         )}
       </View>
       <ConnectDeviceModal onDeviceSelected={handleDeviceSelected} />
-      <ScrollView contentContainerStyle={styles.deviceList}>
-        <ConnectDeviceModalZeroConfig />
-      </ScrollView>
+      <ScrollView contentContainerStyle={styles.deviceList}></ScrollView>
     </View>
   );
 };
