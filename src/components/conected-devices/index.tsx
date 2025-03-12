@@ -8,6 +8,8 @@ import {
   View,
 } from 'react-native';
 
+import { useAuthToken } from '@/hooks/use-auth-token';
+
 import SvgComponent from './assets/bot';
 import SvgComponent3 from './assets/humifi';
 import SvgComponent2 from './assets/light';
@@ -18,6 +20,8 @@ const DeviceScreen = () => {
     name: string;
     id: string;
   } | null>(null);
+  const { authToken } = useAuthToken();
+  console.log('log desde devices search: ', authToken);
 
   const handleDeviceSelected = (device: { name: string; id: string }) => {
     setSelectedDevice(device); // Guardamos el dispositivo seleccionado en el estado
@@ -37,6 +41,7 @@ const DeviceScreen = () => {
         <Text style={styles.subHeaderText}>Wifi: tw1r_413_7G</Text>
       </View>
       <Text style={styles.devicesText}>3 new devices</Text>
+      <Text>El token es: {authToken}</Text>
       <View style={styles.devicesContainer}>
         <TouchableOpacity style={styles.deviceCard}>
           <SvgComponent style={styles.svg3} />
@@ -69,6 +74,8 @@ const DeviceScreen = () => {
           </View>
         )}
       </View>
+      {/*       <ConnectDeviceModalZeroConfig />
+       */}
       <ConnectDeviceModal onDeviceSelected={handleDeviceSelected} />
       <ScrollView contentContainerStyle={styles.deviceList}></ScrollView>
     </View>

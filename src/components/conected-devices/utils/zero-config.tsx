@@ -22,7 +22,7 @@ const ConnectDeviceModalZeroConfig = () => {
           setZeroconf(zeroconfInstance); // Inicializa Zeroconf
           console.log('Zeroconf instance initialized');
 
-          zeroconfInstance.on('resolved', (service) => {
+          zeroconfInstance.on('resolved', (service: any) => {
             console.log('Service found:', service);
             setDevices((prevDevices) => [
               ...prevDevices,
@@ -35,7 +35,7 @@ const ConnectDeviceModalZeroConfig = () => {
             ]);
           });
 
-          zeroconfInstance.on('error', (error: Error) => {
+          zeroconfInstance.on('error', (error: any) => {
             console.error('Zeroconf Error:', error);
           });
         } else {

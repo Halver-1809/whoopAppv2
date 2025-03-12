@@ -4,17 +4,17 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { WebView } from 'react-native-webview';
 
+import { useAuthToken } from '@/hooks/use-auth-token';
+
 export const LoginForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
   const [isWebViewVisible, setWebViewVisible] = useState(false);
-  const [authToken, setAuthToken] = useState<string | null>(null);
-
+  const { authToken, setAuthToken } = useAuthToken();
   const handleLoginPress = () => {
     setWebViewVisible(true);
   };
 
   const handleNavigationStateChange = (navState: any) => {
     const { url } = navState;
-
     console.log('Current URL:', url);
 
     if (url && url.includes('whoopapp://auth/callback')) {
@@ -24,25 +24,21 @@ export const LoginForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
 
         if (token) {
           console.log('Token captured:', token);
-          setAuthToken(token);
+          setAuthToken(token); // Guarda el token en AsyncStorage y en el estado
           setWebViewVisible(false);
-
-          // Trigger the onSubmit function passed as a prop
           onSubmit({ accessToken: token });
 
           Alert.alert(
-            'Authentication Successful',
-            'Token captured successfully.'
+            'Autenticación Exitosa',
+            'Token capturado correctamente.'
           );
         } else {
-          throw new Error('Token not found in URL.');
+          throw new Error('Token no encontrado en la URL.');
         }
       } catch (error) {
-        console.error('Error processing URL:', error.message);
-        Alert.alert('Error', 'Could not capture the token.');
+        console.error('Error procesando la URL:', error);
+        Alert.alert('Error', 'No se pudo capturar el token.');
       }
-    } else {
-      console.log('The URL does not contain the expected scheme.');
     }
   };
 
